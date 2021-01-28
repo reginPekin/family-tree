@@ -5,7 +5,9 @@
     "ts-check": "svelte-check"
   },
   "dependencies": {
+    "d3": "^6.5.0",
     "effector": "^21.7.5",
+    "json-server": "^0.16.3",
     "svelte": "^3.32.0"
   },
   "devDependencies": {
@@ -15,6 +17,8 @@
     "@snowpack/plugin-svelte": "^3.5.2",
     "@snowpack/plugin-typescript": "^1.2.1",
     "@tsconfig/svelte": "^1.0.10",
+    "@types/d3": "^6.3.0",
+    "@types/json-server": "^0.14.3",
     "@types/snowpack-env": "^2.3.3",
     "autoprefixer": "^10.2.3",
     "postcss": "^8.2.4",
