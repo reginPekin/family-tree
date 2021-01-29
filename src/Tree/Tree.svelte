@@ -1,55 +1,37 @@
 <script>
   import { onMount } from "svelte";
 
-  let canvas: HTMLCanvasElement;
+  let canvas = <HTMLCanvasElement>document.getElementById("tutorial");
 
   onMount(() => {
-    const ctx = canvas.getContext("2d");
+    if (!canvas) {
+      console.log("no canvas");
+      return;
+    }
 
-    let frame = requestAnimationFrame(loop);
+    if (canvas.getContext) {
+      console.log("canvas is supported");
+      const ctx = canvas.getContext("2d");
 
-    function loop(t: any) {
       if (!ctx) {
+        console.log("no context");
         return;
       }
 
-      frame = requestAnimationFrame(loop);
-      ctx.strokeRect(15, 15, 266, 266);
-      ctx.strokeRect(18, 18, 260, 260);
-      ctx.fillRect(20, 20, 256, 256);
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "red";
+      ctx.fillRect(30, 30, 50, 50);
 
-      for (let p = 0; p < imageData.data.length; p += 4) {
-        const i = p / 4;
-        const x = i % canvas.width;
-        const y = (i / canvas.height) >>> 0;
-
-        const r = 64 + (128 * x) / canvas.width + 64 * Math.sin(t / 1000);
-        const g = 64 + (128 * y) / canvas.height + 64 * Math.cos(t / 1000);
-        const b = 128;
-
-        imageData.data[p + 0] = r;
-        imageData.data[p + 1] = g;
-        imageData.data[p + 2] = b;
-        imageData.data[p + 3] = 255;
-      }
-
-      ctx.putImageData(imageData, 0, 0);
+      ctx.fillStyle = "white";
+      ctx.fillText("Hello world", 10, 50);
     }
-
-    return () => {
-      cancelAnimationFrame(frame);
-    };
   });
 </script>
 
-<canvas bind:this={canvas} class="bg-red-600" />
+<canvas bind:this={canvas} />
 
 <style>
   canvas {
-    width: 100%;
-    height: 100%;
-    -webkit-mask: url(svelte-logo-mask.svg) 50% 50% no-repeat;
-    mask: url(svelte-logo-mask.svg) 50% 50% no-repeat;
+    height: 150px;
+    background-color: bisque;
   }
 </style>

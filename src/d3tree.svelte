@@ -1,6 +1,8 @@
 <script>
   import * as d3 from "d3";
-  import { onMount } from "svelte";
+
+  const paragraph = d3.select("body").append("p").text("Text tree");
+  paragraph.enter();
 
   const svg = d3
     .select("body")
@@ -9,8 +11,6 @@
     .attr("height", 1500)
     .append("g")
     .attr("transform", "translate(50,50)");
-
-  let el: any;
 
   interface Node {
     child: string;
@@ -43,10 +43,19 @@
 
   const dataStructure = d3
     .stratify()
-    .id((d) => (d as Node).child)
-    .parentId((d) => (d as Node).parent)(data);
+    .id((d) => {
+      // console.log(d);
+      return (d as Node).child;
+    })
+    .parentId((d) => {
+      // console.log(d);
+      return (d as Node).parent;
+    })(data);
+
+  console.log(dataStructure, "dataStructure");
 
   const treeStructure = d3.tree().size([1000, 1000]);
+
   const information = treeStructure(dataStructure as any);
 
   const circles = svg
@@ -58,10 +67,15 @@
     .enter()
     .append("circle")
     .style("fill", "blue")
-    .attr("cx", (d) => d.x)
+    .attr("cx", (d) => {
+      return d.x;
+    })
     .attr("cy", (d) => d.y)
-    .attr("r", 5)
-    .on("click", (d) => console.log(data));
+    .attr("r", (d) => {
+      console.log(d, "attr data");
+      return 5;
+    })
+    .on("click", (d) => console.log(d, "data"));
 
   const connections = svg
     .append("g")
