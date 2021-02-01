@@ -1,3 +1,16 @@
+interface Person {
+  id: number;
+  parents: number;
+  gender: "male" | "female";
+  name: string;
+}
+
+interface Parents {
+  mother: number;
+  father: number;
+  id: number;
+}
+
 export async function createNewPerson(data: any) {
   const options = {
     method: "POST",
@@ -24,7 +37,7 @@ export async function createNewParents(data: any) {
   );
 }
 
-export async function getPersons() {
+export async function getPersons(): Promise<Person[]> {
   const options = {
     method: "GET",
     headers: {
@@ -36,7 +49,7 @@ export async function getPersons() {
   );
 }
 
-export async function getParents() {
+export async function getParents(): Promise<Parents[]> {
   const options = {
     method: "GET",
     headers: {

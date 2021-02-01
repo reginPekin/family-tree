@@ -10,7 +10,7 @@
   <p>Loading</p>
 {:then items}
   {#each items as item}
-    <li>{item}</li>
+    <li>{item.mother}</li>
   {/each}
 {:catch error}
   <p style="color: red">{error.message}</p>
