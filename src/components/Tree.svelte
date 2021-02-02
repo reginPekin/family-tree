@@ -1,17 +1,39 @@
 <script>
-  import { getParents, getPersons } from "../api";
-
+  import { onMount } from "svelte";
   import Node from "./Node.svelte";
+
+  import { addPersonFx } from "../stores/persons/effects";
+
+  import { persons, me } from "../stores/persons";
+  import { parents } from "../stores/parents";
+  import { getPersonsFx } from "../stores/persons/effects";
+
+  import { Tree, Parents, Person } from "../classes";
+
+  onMount(() => {
+    getPersonsFx();
+
+    // const familyTree = new Tree($me);
+  });
+
+  console.log($persons, "persons");
+  console.log($parents, "parents");
 </script>
 
-<Node name="Regina" />
-
-{#await getParents()}
-  <p>Loading</p>
-{:then items}
-  {#each items as item}
-    <li>{item.mother}</li>
+{#if $persons.length}
+  {#each $persons as person}
+    <Node
+      name={person.name}
+      gender={person.gender}
+      parentsId={person.parents}
+    />
   {/each}
-{:catch error}
-  <p style="color: red">{error.message}</p>
-{/await}
+{:else}
+  <p
+    on:click={() => {
+      addPersonFx({ name: "me", gender: "female" });
+    }}
+  >
+    Create new
+  </p>
+{/if}

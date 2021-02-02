@@ -1,4 +1,39 @@
 {
-  "parents": [],
-  "persons": []
+  "parents": [
+    {
+      "mother": 2,
+      "father": 3,
+      "id": 1
+    },
+    {
+      "mother": null,
+      "father": null,
+      "id": 2
+    },
+    {
+      "mother": null,
+      "father": null,
+      "id": 3
+    }
+  ],
+  "persons": [
+    {
+      "name": "me",
+      "gender": "female",
+      "parents": 1,
+      "id": 1
+    },
+    {
+      "name": "The mother of me",
+      "gender": "female",
+      "parents": 2,
+      "id": 2
+    },
+    {
+      "name": "The father of me",
+      "gender": "male",
+      "parents": 3,
+      "id": 3
+    }
+  ]
 }
