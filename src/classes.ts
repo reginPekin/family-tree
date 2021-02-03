@@ -1,3 +1,6 @@
+import { getParents } from "./api/parents";
+import { getPerson } from "./api/persons";
+
 export type Gender = "male" | "female";
 
 interface PersonArgs {
@@ -40,13 +43,5 @@ export class Parents {
     this.id = id;
     this.father = father;
     this.mother = mother;
-  }
-}
-
-export class Tree {
-  root: Person;
-
-  constructor(rootPerson: Person) {
-    this.root = rootPerson;
   }
 }

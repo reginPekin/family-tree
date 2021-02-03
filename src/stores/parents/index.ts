@@ -1,10 +1,20 @@
 import { createStore } from "effector";
 
-import type { Parents } from "../../api";
-import { getParentsFx } from "./effects";
+import type { Parents } from "../../api/parents";
+import { getAllParentsFx } from "./effects";
 
-export const parents = createStore<Parents[]>([]);
+export interface ParentsType {
+  [id: number]: Parents;
+}
 
-parents.on(getParentsFx.doneData, (parentsState, parents: Parents[]) => {
-  return [...parentsState, ...parents];
+export const parents = createStore<ParentsType>({});
+
+parents.on(getAllParentsFx.doneData, (state, parents: Parents[]) => {
+  parents.forEach((parent) => {
+    if (!state[parent.id]) {
+      state[parent.id] = parent;
+    }
+  });
+
+  return state;
 });

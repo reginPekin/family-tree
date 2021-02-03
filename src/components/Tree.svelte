@@ -2,32 +2,34 @@
   import { onMount } from "svelte";
   import Node from "./Node.svelte";
 
-  import { addPersonFx } from "../stores/persons/effects";
+  import { getPerson } from "../utils";
 
-  import { persons, me } from "../stores/persons";
+  import { setTreeFx } from "../stores/persons/events";
+
+  import { persons, me, tree } from "../stores/persons";
   import { parents } from "../stores/parents";
-  import { getPersonsFx } from "../stores/persons/effects";
 
-  import { Tree, Parents, Person } from "../classes";
+  import {
+    getPersonsFx,
+    getMeFx,
+    addPersonFx,
+  } from "../stores/persons/effects";
+  import { getAllParentsFx } from "../stores/parents/effects";
 
-  onMount(() => {
-    getPersonsFx();
+  import type { Person } from "../classes";
 
-    // const familyTree = new Tree($me);
+  onMount(async () => {
+    await getPersonsFx();
+    await getAllParentsFx();
+    await getMeFx();
+
+    setTreeFx(getPerson($me.id, $persons, $parents));
+    console.log($tree, "TREE");
   });
-
-  console.log($persons, "persons");
-  console.log($parents, "parents");
 </script>
 
-{#if $persons.length}
-  {#each $persons as person}
-    <Node
-      name={person.name}
-      gender={person.gender}
-      parentsId={person.parents}
-    />
-  {/each}
+{#if $tree.id}
+  <Node name={$tree.name} gender={$tree.gender} />
 {:else}
   <p
     on:click={() => {

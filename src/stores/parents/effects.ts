@@ -1,5 +1,5 @@
 import { createEffect } from "effector";
 
-import { getParents, Parents } from "../../api";
+import { getAllParents, Parents } from "../../api/parents";
 
-export const getParentsFx = createEffect<void, Parents[]>(getParents);
+export const getAllParentsFx = createEffect<void, Parents[]>(getAllParents);

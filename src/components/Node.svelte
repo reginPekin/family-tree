@@ -3,7 +3,6 @@
 
   export let name = "";
   export let gender: "male" | "female" = "female";
-  export let parentsId: number;
 
   const isFemale = gender === "female";
   const femaleClasses = "bg-red-400 border-red-600";
@@ -15,16 +14,16 @@
     ? femaleClasses
     : maleClasses} rounded-md border shadow-md flex 
     break-normal justify-center items-center text-yellow-50 text-xs node"
-  on:click={() => {
-    addParentsFx({ childName: name, parentsId });
-  }}
 >
   <span class="h-min text-center">{name}</span>
 </div>
 
+<!-- on:click={() => {
+  addParentsFx({ childName: name, parentsId });
+}}  -->
 <style>
   .node {
-    width: 100px;
+    width: 110px;
     height: 65px;
   }
 </style>
