@@ -1,5 +1,5 @@
 import { createEvent } from "effector";
 
-import type { PersonType } from "../../utils";
+import type { Person } from "../../classes";
 
-export const setTreeFx = createEvent<PersonType>();
+export const addHashTablePersons = createEvent<Person>();

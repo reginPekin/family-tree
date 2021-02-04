@@ -1,5 +1,9 @@
 import { Parents, createNewParents } from "./parents";
 
+import { addHashTableParent } from "../stores/parents/events";
+
+import { Person as PersonClass, Parents as ParentsClass } from "../classes";
+
 export interface Person {
   id: number;
   parents: number;
@@ -45,10 +49,10 @@ export async function getPerson(personId: number): Promise<Person> {
 
 export async function createNewPerson({
   data,
-  childId,
+  child,
 }: {
   data: Omit<Person, "id" | "parents">;
-  childId: number;
+  child?: PersonClass;
 }) {
   const parents: Parents = await createNewParents({
     mother: null,
@@ -64,5 +68,12 @@ export async function createNewPerson({
   };
 
   const req = await fetch("http://localhost:3000/persons", options);
-  return { person: req.json(), childId };
+
+  addHashTableParent(
+    new ParentsClass({ id: parents.id, mother: null, father: null })
+  );
+
+  const person = await req.json();
+
+  return { person, child };
 }

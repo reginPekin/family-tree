@@ -1,13 +1,14 @@
 <script>
   import { onMount } from "svelte";
+
   import Node from "./Node.svelte";
 
   import { getPerson } from "../utils";
 
-  import { setTreeFx } from "../stores/persons/events";
-
-  import { persons, me, tree } from "../stores/persons";
-  import { parents } from "../stores/parents";
+  import { setTreeFx } from "../stores/tree/events";
+  import { persons, me, personsHashTable } from "../stores/persons";
+  import { parents, parentsHashTable } from "../stores/parents";
+  import { tree } from "../stores/tree";
 
   import {
     getPersonsFx,
@@ -16,24 +17,27 @@
   } from "../stores/persons/effects";
   import { getAllParentsFx } from "../stores/parents/effects";
 
-  import type { Person } from "../classes";
-
   onMount(async () => {
     await getPersonsFx();
     await getAllParentsFx();
     await getMeFx();
 
-    setTreeFx(getPerson($me.id, $persons, $parents));
+    if ($me.id) {
+      setTreeFx(getPerson($me.id, $persons, $parents));
+    }
+
     console.log($tree, "TREE");
+    console.log($personsHashTable, "persons hash table");
+    console.log($parentsHashTable, "parents hash table");
   });
 </script>
 
 {#if $tree.id}
-  <Node name={$tree.name} gender={$tree.gender} />
+  <Node person={$tree} />
 {:else}
   <p
-    on:click={() => {
-      addPersonFx({ name: "me", gender: "female" });
+    on:click={async () => {
+      addPersonFx({ data: { name: "me", gender: "female" } });
     }}
   >
     Create new

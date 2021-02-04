@@ -1,14 +1,20 @@
 import { createStore } from "effector";
 
-import type { PersonType } from "../../utils";
-
 import type { Person } from "../../api/persons";
+import { Parents, Person as PersonClass } from "../../classes";
 
 import { getPersonsFx, getMeFx, addPersonFx, addParentsFx } from "./effects";
-import { setTreeFx } from "./events";
+import { updateHashTableParents } from "../parents/events";
+import { parentsHashTable } from "../parents";
+import { tree as treeStore } from "../tree";
+import { setTreeFx } from "../tree/events";
 
 export interface PersonsType {
   [id: number]: Person;
+}
+
+export interface HashTablePersons {
+  [id: number]: PersonClass;
 }
 
 export const persons = createStore<PersonsType>({});
@@ -23,19 +29,46 @@ persons.on(getPersonsFx.doneData, (state, persons: Person[]) => {
   return state;
 });
 
-// persons.on(addPersonFx.doneData, (personsState, person: Person) => [
-//   ...personsState,
-//   person,
-// ]);
+export const personsHashTable = createStore<HashTablePersons>({});
 
-// persons.on(
-//   addParentsFx.doneData,
-//   (personsState, parents: { mother: Person; father: Person }) => [
-//     ...personsState,
-//     parents.mother,
-//     parents.father,
-//   ]
-// );
+personsHashTable.on(addPersonFx.doneData, (state, { person, child }: any) =>
+  // { person: Person; child: PersonClass }
+  {
+    console.log("personsHashTable addPersonFx -->");
+    console.log(person, "PERSON");
+    console.log(child, "CHILD");
+
+    let newPersonParents: Parents | undefined;
+    let tree: PersonClass | undefined;
+
+    parentsHashTable.watch((watchedParents) => {
+      newPersonParents = watchedParents[person.id];
+    });
+
+    treeStore.watch((watchedTree) => {
+      tree = watchedTree;
+    });
+
+    const newPerson = new PersonClass({
+      ...person,
+      parents: newPersonParents || { id: 0, mother: null, father: null },
+    });
+
+    if (child) {
+      updateHashTableParents({ parentsId: child.parents, newPerson });
+    }
+
+    state[person.id] = newPerson;
+
+    if (!tree?.id) {
+      setTreeFx(newPerson);
+    }
+
+    console.log(state, "NEW STATE");
+
+    return state;
+  }
+);
 
 export const me = createStore<Person>({
   name: "",
@@ -46,26 +79,4 @@ export const me = createStore<Person>({
 
 me.on(getMeFx.doneData, (_, me: Person) => {
   return me;
-});
-
-export const tree = createStore<PersonType>({
-  name: "",
-  gender: "female",
-  id: 0,
-  parents: { mother: null, father: null, id: 0 },
-});
-
-tree.on(setTreeFx, (_, tree) => {
-  return tree;
-});
-
-tree.on(addPersonFx.doneData, (treeState, person: Person) => {
-  // treeState[person.id] = person;
-  console.log(person, "add person to the tree");
-  
-
-  if()
-  return treeState;
-
- 
 });

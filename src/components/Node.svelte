@@ -1,26 +1,27 @@
 <script>
+  import type { Person } from "../classes";
+
   import { addParentsFx } from "../stores/persons/effects";
 
-  export let name = "";
-  export let gender: "male" | "female" = "female";
+  export let person: Person;
 
-  const isFemale = gender === "female";
-  const femaleClasses = "bg-red-400 border-red-600";
-  const maleClasses = "bg-blue-400 border-blue-600";
+  const isFemale = person.gender === "female";
+  const femaleClasses = "bg-red-400 border-red-600 hover:bg-red-500";
+  const maleClasses = "bg-blue-400 border-blue-600 hover:bg-blue-500";
 </script>
 
 <div
+  on:click={() => {
+    addParentsFx({ child: person });
+  }}
   class="{isFemale
     ? femaleClasses
     : maleClasses} rounded-md border shadow-md flex 
-    break-normal justify-center items-center text-yellow-50 text-xs node"
+    break-normal justify-center items-center text-yellow-50 text-xs cursor-pointer  node"
 >
-  <span class="h-min text-center">{name}</span>
+  <span class="h-min text-center">{person.name}</span>
 </div>
 
-<!-- on:click={() => {
-  addParentsFx({ childName: name, parentsId });
-}}  -->
 <style>
   .node {
     width: 110px;

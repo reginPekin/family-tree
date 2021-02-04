@@ -1,5 +1,7 @@
 import { createEffect } from "effector";
 
+import type { Person as PersonClass } from "../../classes";
+
 import { getPersons, getMe, Person, createNewPerson } from "../../api/persons";
 import { updateParents } from "../../api/parents";
 
@@ -8,15 +10,14 @@ export const getMeFx = createEffect<void, Person>(getMe);
 export const addPersonFx = createEffect<
   {
     data: Omit<Person, "id" | "parents">;
-    childId: number;
+    child?: PersonClass;
   },
-  { person: Person; childId: number }
+  { person: Person; child?: PersonClass }
 >(createNewPerson);
 
 export const addParentsFx = createEffect<
   {
-    childName: string;
-    parentsId: number;
+    child: PersonClass;
   },
   { mother: Person; father: Person }
 >(updateParents);

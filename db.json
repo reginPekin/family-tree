@@ -1,8 +1,8 @@
 {
   "parents": [
     {
-      "mother": null,
-      "father": null,
+      "mother": 1,
+      "father": 2,
       "id": 1
     },
     {
@@ -13,14 +13,14 @@
   ],
   "persons": [
     {
-      "name": "me",
+      "name": "The mother of me",
       "gender": "female",
       "parents": 1,
       "id": 1
     },
     {
-      "name": "me",
-      "gender": "female",
+      "name": "The father of me",
+      "gender": "male",
       "parents": 2,
       "id": 2
     }

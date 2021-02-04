@@ -1,4 +1,7 @@
-import { Person, createNewPerson } from "./persons";
+import { Person as PersonInterface, createNewPerson } from "./persons";
+
+import { updateHashTableParents } from "../stores/parents/events";
+import type { Person } from "../classes";
 
 export interface Parents {
   mother: number | null;
@@ -46,22 +49,24 @@ export async function createNewParents(data: Omit<Parents, "id">) {
   return req.json();
 }
 
-export async function updateParents({
-  childName,
-  parentsId,
-}: {
-  childName: string;
-  parentsId: number;
-}) {
-  const mother: Person = await createNewPerson({
-    name: `The mother of ${childName}`,
-    gender: "female",
-  });
+export async function updateParents({ child }: { child: Person }) {
+  const { person: mother }: { person: PersonInterface } = await createNewPerson(
+    {
+      data: {
+        name: `The mother of ${child.name}`,
+        gender: "female",
+      },
+    }
+  );
 
-  const father: Person = await createNewPerson({
-    name: `The father of ${childName}`,
-    gender: "male",
-  });
+  const { person: father }: { person: PersonInterface } = await createNewPerson(
+    {
+      data: {
+        name: `The father of ${child.name}`,
+        gender: "male",
+      },
+    }
+  );
 
   const options = {
     method: "PATCH",
@@ -71,10 +76,12 @@ export async function updateParents({
     body: JSON.stringify({ mother: mother.id, father: father.id }),
   };
 
-  const req = await fetch(
-    `http://localhost:3000/parents/${parentsId}`,
+  const updatedParents = await fetch(
+    `http://localhost:3000/parents/${child.parents.id}`,
     options
   );
+
+  // updateHashTableParents(new Parents({ id: parentsId, mother, father }));
 
   return { mother, father };
 }

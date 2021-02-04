@@ -1,6 +1,9 @@
 import type { ParentsType as ParentsStoreTypes } from "../stores/parents";
 import type { PersonsType as PersonStoreTypes } from "../stores/persons";
 
+import { addHashTableParent } from "../stores/parents/events";
+import { addHashTablePersons } from "../stores/persons/events";
+
 import { Parents, Person } from "../classes";
 
 export interface ParentsType {
@@ -29,6 +32,7 @@ export function getParents(
       mother: null,
       father: null,
     });
+    addHashTableParent(parentsClass);
 
     return parentsClass;
   }
@@ -42,6 +46,7 @@ export function getParents(
     : null;
 
   const parentsClass = new Parents({ id: parents.id, mother, father });
+  addHashTableParent(parentsClass);
 
   return parentsClass;
 }
@@ -60,5 +65,7 @@ export function getPerson(
     name: person.name,
     parents,
   });
+  addHashTablePersons(personClass);
+
   return personClass;
 }
