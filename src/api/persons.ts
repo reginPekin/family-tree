@@ -59,6 +59,8 @@ export async function createNewPerson({
     father: null,
   });
 
+  console.log(data, "DATA OF THE CREATED PARENTS");
+  console.log(parents, "CREATED PARENTS");
   const options = {
     method: "POST",
     headers: {

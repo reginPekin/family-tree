@@ -6,8 +6,8 @@
   import { getPerson } from "../utils";
 
   import { setTreeFx } from "../stores/tree/events";
-  import { persons, me, personsHashTable } from "../stores/persons";
-  import { parents, parentsHashTable } from "../stores/parents";
+  import { persons, me } from "../stores/persons";
+  import { parents } from "../stores/parents";
   import { tree } from "../stores/tree";
 
   import {
@@ -22,13 +22,13 @@
     await getAllParentsFx();
     await getMeFx();
 
+    tree.map((watchedTree) => {
+      console.log(watchedTree, "watchedTree inside TREE");
+    });
+
     if ($me.id) {
       setTreeFx(getPerson($me.id, $persons, $parents));
     }
-
-    console.log($tree, "TREE");
-    console.log($personsHashTable, "persons hash table");
-    console.log($parentsHashTable, "parents hash table");
   });
 </script>
 

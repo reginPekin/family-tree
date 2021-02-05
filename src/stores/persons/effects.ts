@@ -19,5 +19,6 @@ export const addParentsFx = createEffect<
   {
     child: PersonClass;
   },
-  { mother: Person; father: Person }
+  // { mother: Person; father: Person }
+  any
 >(updateParents);

@@ -65,6 +65,7 @@ export function getPerson(
     name: person.name,
     parents,
   });
+
   addHashTablePersons(personClass);
 
   return personClass;

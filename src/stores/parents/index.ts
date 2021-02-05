@@ -37,7 +37,6 @@ parentsHashTable.on(addHashTableParent, (state, parents: ParentsClass) => {
 parentsHashTable.on(
   updateHashTableParents,
   (state, { parentsId, newPerson }: any) => {
-    console.log(newPerson, "NEW PERSON");
     if (newPerson.gender === "male") {
       state[parentsId].father = newPerson;
     } else {
